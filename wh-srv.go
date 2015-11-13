@@ -1,4 +1,12 @@
+package main
 
+import (
+	"encoding/json"
+	"fmt"
+	"io/ioutil"
+	"net/http"
+	"strings"
+)
 
 func (m *merger) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	// unmarshal payload
@@ -28,7 +36,7 @@ func (m *merger) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		// something
 		return
 	}
-	if !strings.HasPrefix(payload.Comment.Body, fmt.Sprintf("@%s merge", m.ghUser)) {
+	if payload.Comment.Body != fmt.Sprintf("@%s merge", m.ghUser) {
 		// something
 		return
 	}
@@ -71,4 +79,3 @@ func (m *merger) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		prNum:     payload.Issue.Number,
 	}
 }
-

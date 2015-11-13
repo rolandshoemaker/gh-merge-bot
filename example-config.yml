@@ -1,0 +1,18 @@
+reviewerLabelPrefix: r=
+reviewers:
+  - someone
+  - another
+
+numReviewersRequired: 2
+numReviewersOverrides:
+  - tests: 1
+
+mergeScript: bash example-merger.sh
+
+github:
+  user: merge-bot
+  token: um
+  repo: user/repo
+
+webhookServerAddr: localhost:2020
+ghAPIBase: https://api.github.com
