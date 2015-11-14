@@ -1,5 +1,7 @@
 # `merge-bot`
 
+![silly robot](https://i.imgur.com/Okw1PRp.gif)
+
 This is a pretty simple GitHub bot that can be called upon to merge pull requests
 in strange fashions. Before executing the merge it will check that the PR was reviewed
 the required number of times, has all successful commit statuses, and that it is up to
