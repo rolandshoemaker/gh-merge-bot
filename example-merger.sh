@@ -7,6 +7,8 @@
 local_user="rolandshoemaker"
 merge_flags="--no-ff -S"
 
+cd /repo-place
+
 git fetch origin
 git checkout master
 
