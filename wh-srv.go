@@ -1,6 +1,9 @@
 package main
 
 import (
+	"crypto/hmac"
+	"crypto/sha1"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -15,6 +18,37 @@ func (m *merger) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		// something
 		return
 	}
+
+	if r.Method != "POST" {
+		fmt.Printf("Invalid request method: %s\n", r.Method)
+		return
+	}
+
+	// Get signature
+	githubSignature := r.Header.Get("X-Hub-Signature")
+	if githubSignature == "" {
+		fmt.Println("No signature on request")
+		return
+	}
+
+	// Verify signature
+	mac := hmac.New(sha1.New, m.whSecret)
+	mac.Write(body)
+	expectedMAC := mac.Sum(nil)
+	if len(githubSignature) <= 5 {
+		fmt.Println("Invalid signature on request, no actual signature")
+		return
+	}
+	sigBytes, err := hex.DecodeString(githubSignature[5:])
+	if err != nil {
+		fmt.Printf("Invalid signature on request, %s", err)
+		return
+	}
+	if match := hmac.Equal(sigBytes, expectedMAC); !match {
+		fmt.Printf("Invalid signature on request, provided: %x, expected: sha1=%x", githubSignature, expectedMAC)
+		return
+	}
+
 	var payload whPayload
 	err = json.Unmarshal(body, &payload)
 	if err != nil {

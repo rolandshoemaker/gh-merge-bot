@@ -53,11 +53,12 @@ type merger struct {
 	ghAPIBase string
 
 	whSrvAddr string
+	whSecret  []byte
 
 	client *http.Client
 }
 
-func newMerger(mergeScript []string, numReviewers int, reviewPrefix string, reviewers []string, overrides map[string]int, ghUser, ghToken, ghRepo, ghAPIBase string, whSrvAddr string) *merger {
+func newMerger(mergeScript []string, numReviewers int, reviewPrefix string, reviewers []string, overrides map[string]int, ghUser, ghToken, ghRepo, ghAPIBase string, whSrvAddr string, whSecret []byte) *merger {
 	reviewerMap := make(map[string]struct{})
 	for _, r := range reviewers {
 		reviewerMap[r] = struct{}{}
@@ -73,6 +74,7 @@ func newMerger(mergeScript []string, numReviewers int, reviewPrefix string, revi
 		ghToken:              ghToken,
 		ghAPIBase:            ghAPIBase,
 		whSrvAddr:            whSrvAddr,
+		whSecret:             whSecret,
 	}
 }
 
